@@ -9,6 +9,9 @@ import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.*;
 
 public class RegistrationFormTests extends TestBase {
+    SelenideElement maleLabel = $$("#genterWrapper label").findBy(text("Male"));
+    SelenideElement sportsLabel = $$("#hobbiesWrapper label").findBy(text("Sports"));
+    SelenideElement musicLabel = $$("#hobbiesWrapper label").findBy(text("Music"));
 
     @Test
     void successfulFillFormTest() {
@@ -17,7 +20,7 @@ public class RegistrationFormTests extends TestBase {
         $("#firstName").setValue("Ivan");
         $("#lastName").setValue("Ivanov");
         $("#userEmail").setValue("Ivanov@example.com");
-        $("#gender-radio-1").click();
+        maleLabel.click();
         $("#userNumber").setValue("9298564111");
         $("#dateOfBirthInput").click();
         $(".react-datepicker__month-select").selectOption("February");
@@ -25,8 +28,8 @@ public class RegistrationFormTests extends TestBase {
         $(".react-datepicker__day--021").click();
         $("#subjectsInput").setValue("Arts");
         $$("div[id*='option']").findBy(text("Arts")).click();
-        $("#hobbies-checkbox-1").click();
-        $("#hobbies-checkbox-3").click();
+        sportsLabel.click();
+        musicLabel.click();
         $("#uploadPicture").uploadFromClasspath("test-image.jpg");
         $("#currentAddress").setValue("Jaipur, Rajasthan, India");
         $("#state").click();
@@ -35,7 +38,18 @@ public class RegistrationFormTests extends TestBase {
         $$("div[id*='option']").findBy(text("Jaipur")).click();
         $("#submit").click();
 
+        $(".modal-content").shouldBe(visible);
         $("#example-modal-sizes-title-lg").shouldBe(text("Thanks for submitting the form"));
+        $x("//tr[td[text()='Student Name']]/td[2]").shouldHave(text("Ivan Ivanov"));
+        $x("//tr[td[text()='Student Email']]/td[2]").shouldHave(text("Ivanov@example.com"));
+        $x("//tr[td[text()='Gender']]/td[2]").shouldHave(text("Male"));
+        $x("//tr[td[text()='Mobile']]/td[2]").shouldHave(text("9298564111"));
+        $x("//tr[td[text()='Date of Birth']]/td[2]").shouldHave(text("21 February,2005"));
+        $x("//tr[td[text()='Subjects']]/td[2]").shouldHave(text("Arts"));
+        $x("//tr[td[text()='Hobbies']]/td[2]").shouldHave(text("Sports, Music"));
+        $x("//tr[td[text()='Picture']]/td[2]").shouldHave(text("test-image.jpg"));
+        $x("//tr[td[text()='Address']]/td[2]").shouldHave(text("Jaipur, Rajasthan, India"));
+        $x("//tr[td[text()='State and City']]/td[2]").shouldHave(text("Rajasthan Jaipur"));
     }
 
     @Test
@@ -44,11 +58,22 @@ public class RegistrationFormTests extends TestBase {
 
         $("#firstName").setValue("Ivan");
         $("#lastName").setValue("Ivanov");
-        $("#gender-radio-1").click();
+        maleLabel.click();
         $("#userNumber").setValue("9298564111");
         $("#submit").click();
 
+        $(".modal-content").shouldBe(visible);
         $("#example-modal-sizes-title-lg").shouldBe(text("Thanks for submitting the form"));
+        $x("//tr[td[text()='Student Name']]/td[2]").shouldHave(text("Ivan Ivanov"));
+        $x("//tr[td[text()='Gender']]/td[2]").shouldHave(text("Male"));
+        $x("//tr[td[text()='Mobile']]/td[2]").shouldHave(text("9298564111"));
+        $x("//tr[td[text()='Student Email']]/td[2]").shouldBe(empty);
+        $x("//tr[td[text()='Subjects']]/td[2]").shouldBe(empty);
+        $x("//tr[td[text()='Hobbies']]/td[2]").shouldBe(empty);
+        $x("//tr[td[text()='Picture']]/td[2]").shouldBe(empty);
+        $x("//tr[td[text()='Address']]/td[2]").shouldBe(empty);
+        $x("//tr[td[text()='State and City']]/td[2]").shouldBe(empty);
+        $x("//tr[td[text()='Date of Birth']]/td[2]").shouldBe(empty);
     }
 
     @Test
@@ -74,7 +99,7 @@ public class RegistrationFormTests extends TestBase {
 
         $("#firstName").setValue("Ivan");
         $("#lastName").setValue("Ivanov");
-        $("#gender-radio-1").click();
+        maleLabel.click();
         $("#userNumber").setValue("12345");
         $("#submit").click();
 
@@ -89,7 +114,7 @@ public class RegistrationFormTests extends TestBase {
         $("#firstName").setValue("Ivan");
         $("#lastName").setValue("Ivanov");
         $("#userEmail").setValue("Ivanov");
-        $("#gender-radio-1").click();
+        maleLabel.click();
         $("#userNumber").setValue("9298564111");
         $("#submit").click();
 
